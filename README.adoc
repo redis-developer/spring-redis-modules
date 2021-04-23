@@ -21,15 +21,23 @@ Spring Redis Modules provides Spring applications with access to Redis Modules u
 
 == Usage
 
-Add Spring Redis Modules to your application dependencies, e.g. with Maven:
+Add Spring Redis Modules to your application dependencies:
 
-```
+.Maven
+[source,xml]
+----
 <dependency>
     <groupId>com.redislabs</groupId>
     <artifactId>spring-redis-modules</artifactId>
     <version>x.y.z</version>
 </dependency>
-```
+----
+
+.Gradle
+[source,groovy]
+----
+implementation 'com.redislabs:spring-redis-modules:x.y.z'
+----
 
 Inject and use RedisModulesClient or StatefulRedisModulesConnection:
 
