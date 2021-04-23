@@ -37,7 +37,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter') {
         exclude group: 'io.lettuce', module: 'lettuce-core'
     }
-    api 'com.redislabs:mesclun:1.2.5'
+    api 'com.redislabs:mesclun:1.2.6'
     api 'org.apache.commons:commons-pool2'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
