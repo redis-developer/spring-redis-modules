@@ -1,0 +1,118 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
+    id 'net.researchgate.release' version '2.8.1'
+    id 'com.github.ben-manes.versions' version '0.38.0'
+    id 'com.github.breadmoirai.github-release' version '2.2.12'
+}
+
+group = 'com.redislabs'
+description = 'Spring Redis Modules'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter') {
+        exclude group: 'io.lettuce', module: 'lettuce-core'
+    }
+    api 'com.redislabs:mesclun:1.2.5'
+    api 'org.apache.commons:commons-pool2'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'com.redislabs:testcontainers-redis:1.1.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'Spring Redis Modules'
+                description = 'Spring configuration for Mesclun'
+                url = 'https://github.com/redis-developer/spring-redis-modules'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'jruaux'
+                        name = 'Julien Ruaux'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/redis-developer/spring-redis-modules.git'
+                    developerConnection = 'scm:git:git@github.com:redis-developer/spring-redis-modules.git'
+                    url = 'https://github.com/redis-developer/spring-redis-modules'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
+githubRelease {
+    token = project.hasProperty('githubToken') ? project.property('githubToken') : ''
+    owner "redis-developer"
+    repo "spring-redis-modules"
+    draft true
+    body changelog()
+}
+
+afterReleaseBuild.dependsOn ":githubRelease"
+afterReleaseBuild.dependsOn ":publishToSonatype"
+afterReleaseBuild.dependsOn ":closeAndReleaseSonatypeStagingRepository"

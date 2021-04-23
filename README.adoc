@@ -1,0 +1,56 @@
+= Spring Redis Modules
+ifdef::env-github[]
+:badges:
+:tag: master
+:!toc-title:
+:tip-caption: :bulb:
+:note-caption: :paperclip:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+// Badges
+ifdef::badges[]
+image:https://img.shields.io/github/license/redis-developer/spring-redis-modules.svg["License", link="https://github.com/redis-developer/spring-redis-modules"]
+image:https://img.shields.io/github/release/redis-developer/spring-redis-modules.svg["Latest", link="https://github.com/redis-developer/spring-redis-modules/releases/latest"]
+image:https://img.shields.io/badge/Forum-Modules-blue["Forum", link="https://forum.redislabs.com/c/modules/"]
+endif::[]
+
+Spring Redis Modules provides Spring applications with access to Redis Modules using https://github.com/redis-developer/mesclun[Mesclun]
+
+== Usage
+
+Add Spring Redis Modules to your application dependencies, e.g. with Maven:
+
+```
+<dependency>
+    <groupId>com.redislabs</groupId>
+    <artifactId>spring-redis-modules</artifactId>
+    <version>x.y.z</version>
+</dependency>
+```
+
+Inject and use RedisModulesClient or StatefulRedisModulesConnection:
+
+[source,java]
+----
+public class Example {
+
+    @Autowired
+    StatefulRedisModulesConnection<String, String> connection;
+
+    public void testSearch() {
+        connection.sync().search("music", "Lalo Schifrin");
+    }
+
+    public void testGears() {
+        connection.sync().pyExecute("GB().run('artist:*')");
+    }
+
+    public void testTimeSeries() {
+        connection.sync().add("temp:3:11", 1548149181, 30);
+    }
+
+}
+----
