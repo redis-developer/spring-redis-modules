@@ -109,7 +109,6 @@ githubRelease {
     token = project.hasProperty('githubToken') ? project.property('githubToken') : ''
     owner "redis-developer"
     repo "spring-redis-modules"
-    draft true
     body changelog()
 }
 
