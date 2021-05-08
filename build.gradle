@@ -106,7 +106,7 @@ nexusPublishing {
 }
 
 githubRelease {
-    token = project.hasProperty('githubToken') ? project.property('githubToken') : ''
+    token = project.hasProperty('github.token') ? project.property('github.token') : ''
     owner "redis-developer"
     repo "spring-redis-modules"
     body changelog()
