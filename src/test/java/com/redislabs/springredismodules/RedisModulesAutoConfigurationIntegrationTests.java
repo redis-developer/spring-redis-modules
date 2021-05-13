@@ -29,7 +29,9 @@ class RedisModulesAutoConfigurationIntegrationTests {
     @Test
     void defaultConfiguration() {
         this.contextRunner.run((context) -> {
+            assertThat(context.getBean("client")).isInstanceOf(RedisModulesClient.class);
             assertThat(context).hasSingleBean(RedisModulesClient.class);
+            assertThat(context).hasSingleBean(StatefulRedisModulesConnection.class);
             RedisModulesClient client = context.getBean(RedisModulesClient.class);
             StatefulRedisModulesConnection<String, String> connection = client.connect();
             String key = "suggestIdx";
