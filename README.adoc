@@ -14,6 +14,8 @@ endif::[]
 ifdef::badges[]
 image:https://img.shields.io/github/license/redis-developer/spring-redis-modules.svg["License", link="https://github.com/redis-developer/spring-redis-modules"]
 image:https://img.shields.io/github/release/redis-developer/spring-redis-modules.svg["Latest", link="https://github.com/redis-developer/spring-redis-modules/releases/latest"]
+image:https://github.com/redis-developer/spring-redis-modules/actions/workflows/gradle.yml/badge.svg["Build", link="https://github.com/redis-developer/spring-redis-modules/actions/workflows/gradle.yml"]
+image:https://codecov.io/gh/redis-developer/spring-redis-modules/branch/master/graph/badge.svg?token=JP00E3TMUM["Coverage", link="https://codecov.io/gh/redis-developer/spring-redis-modules"]
 image:https://img.shields.io/badge/Forum-Modules-blue["Forum", link="https://forum.redislabs.com/c/modules/"]
 endif::[]
 
